@@ -29,6 +29,7 @@ import type { StatsFormat } from './types/stats_report.js';
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
+/** Parsed command-line options (see the Commander definitions in {@link main}). */
 type CliOptions = {
 	color: boolean;
 	stats: boolean;
@@ -36,6 +37,12 @@ type CliOptions = {
 	markdown: boolean;
 };
 
+/**
+ * Entry point: parses options, then reads stream-json events line-by-line from
+ * stdin. Every event is fed to the {@link StatsCollector}; unless a stats-only
+ * mode is active it is also rendered by the {@link LogRenderer}. On stdin close
+ * it prints either the stats summary or the `[stream ended]` marker.
+ */
 async function main(): Promise<void> {
 	const packageJsonPath = Path.join(__dirname, '..', 'package.json');
 	const packageJson: object = JSON.parse(await Fs.promises.readFile(packageJsonPath, 'utf-8'));

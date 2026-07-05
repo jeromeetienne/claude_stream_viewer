@@ -3,11 +3,23 @@ import { TerminalOutput } from '../libs/terminal_output.js';
 import { ToolInputFormatter } from './tool_input_formatter.js';
 import type { ClaudeEvent, ContentBlock, ToolInput } from '../types/claude_event.js';
 
+/** Tool results longer than this many lines are truncated in the log. */
 const MAX_TOOL_RESULT_LINES = 40;
 
+/**
+ * Renders consolidated stream events to stdout as a colorized, human-readable
+ * log.
+ *
+ * Holds per-stream state (a `tool_use_id` → tool-name map used to label tool
+ * results), so a fresh instance should be created per stream.
+ */
 export class LogRenderer {
 	private toolNamesById = new Map<string, string>();
 
+	/**
+	 * Renders a single event to stdout. `stream_event` envelopes are skipped and
+	 * unrecognized event types are dumped as raw JSON under a generic header.
+	 */
 	render(event: ClaudeEvent) {
 		const type = event.type;
 		if (type === 'stream_event') return;

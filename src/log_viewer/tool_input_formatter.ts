@@ -1,7 +1,19 @@
 import { colors } from '../libs/colors.js';
 import type { ToolInput } from '../types/claude_event.js';
 
+/**
+ * Renders a `tool_use` block's input into compact, human-readable lines — one
+ * dedicated formatter per known tool (Bash, Read, Grep, …).
+ */
 export class ToolInputFormatter {
+	/**
+	 * Formats a tool's input into display lines, dispatched by tool name.
+	 * Unrecognized tools fall back to a pretty-printed JSON dump.
+	 *
+	 * @param name  Tool name from the `tool_use` block.
+	 * @param input Raw tool input object.
+	 * @returns Colorized lines to print beneath the tool header.
+	 */
 	static format(name: string, input: ToolInput): string[] {
 		if (name === 'Bash') return ToolInputFormatter.formatBashInput(input);
 		if (name === 'Read') return ToolInputFormatter.formatReadInput(input);

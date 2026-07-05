@@ -1,6 +1,11 @@
 import type { ClaudeEvent, ModelUsage } from '../types/claude_event.js';
 import type { ModelTokens, StatsReport } from '../types/stats_report.js';
 
+/**
+ * Accumulates per-stream statistics — tool-call counts, tool-result errors, and
+ * peak prompt size — and captures the `result` event, then assembles a
+ * {@link StatsReport}. A fresh instance should be created per stream.
+ */
 export class StatsCollector {
 	private toolUseCounts = new Map<string, number>();
 	private toolResultCount = 0;
@@ -8,6 +13,7 @@ export class StatsCollector {
 	private peakPromptTokens = 0;
 	private resultEvent: ClaudeEvent | undefined;
 
+	/** Feeds one event into the accumulators; call for every event in the stream. */
 	track(event: ClaudeEvent) {
 		const type = event.type;
 		if (type === 'assistant') {
@@ -59,6 +65,10 @@ export class StatsCollector {
 		}
 	}
 
+	/**
+	 * Builds the final {@link StatsReport} from the captured `result` event and
+	 * the tracked accumulators. Call once, after the stream closes.
+	 */
 	buildReport(): StatsReport {
 		const event = this.resultEvent;
 		const usage = event?.usage;

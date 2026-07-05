@@ -1,3 +1,9 @@
+/**
+ * A single content block inside an `assistant` or `user` message.
+ *
+ * The same shape covers every block kind (`text`, `thinking`, `tool_use`,
+ * `tool_result`); only the fields relevant to a given `type` are populated.
+ */
 export type ContentBlock = {
 	type?: string;
 	text?: string;
@@ -10,8 +16,10 @@ export type ContentBlock = {
 	is_error?: boolean;
 };
 
+/** Raw, untyped input object of a `tool_use` block, keyed by parameter name. */
 export type ToolInput = Record<string, unknown>;
 
+/** Per-model usage aggregate, as found in the result event's `modelUsage` map. */
 export type ModelUsage = {
 	inputTokens?: number;
 	outputTokens?: number;
@@ -21,8 +29,13 @@ export type ModelUsage = {
 	contextWindow?: number;
 };
 
-// Partial typing on purpose: only fields we render are listed. Anything we
-// don't recognize falls through to the unknown-event branch.
+/**
+ * A consolidated Claude Code stream-json event (`system`, `assistant`, `user`,
+ * `rate_limit_event`, `result`, …).
+ *
+ * Partial typing on purpose: only the fields the viewer reads are listed.
+ * Anything unrecognized falls through to the unknown-event branch.
+ */
 export type ClaudeEvent = {
 	type?: string;
 	subtype?: string;

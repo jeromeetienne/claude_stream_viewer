@@ -2,7 +2,12 @@ import { colors } from '../libs/colors.js';
 import { TerminalOutput } from '../libs/terminal_output.js';
 import type { StatsFormat, StatsReport } from '../types/stats_report.js';
 
+/** Renders a {@link StatsReport} as colorized text, JSON, or Markdown. */
 export class StatsRenderer {
+	/**
+	 * Renders the report in the requested format and returns it as a single
+	 * string ready to print. Text output is colorized; JSON and Markdown are not.
+	 */
 	static render(report: StatsReport, format: StatsFormat): string {
 		if (format === 'json') return JSON.stringify(report, null, 2);
 		if (format === 'markdown') return StatsRenderer.formatMarkdown(report);
