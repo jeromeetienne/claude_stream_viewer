@@ -35,12 +35,11 @@
     "type": "module",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/jeromeetienne/skillmd_collection.git",
-        "directory": "packages/claude_stream_viewer"
+        "url": "git+https://github.com/jeromeetienne/claude_stream_viewer.git"
     },
-    "homepage": "https://github.com/jeromeetienne/skillmd_collection/tree/main/packages/claude_stream_viewer#readme",
+    "homepage": "https://github.com/jeromeetienne/claude_stream_viewer#readme",
     "bugs": {
-        "url": "https://github.com/jeromeetienne/skillmd_collection/issues"
+        "url": "https://github.com/jeromeetienne/claude_stream_viewer/issues"
     },
     "dependencies": {
         "chalk": "^5.6.2",
