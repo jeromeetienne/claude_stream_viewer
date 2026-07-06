@@ -5,13 +5,14 @@
 // `stream_event` SSE envelopes are ignored — the consolidated events already
 // carry fully assembled content blocks.
 //
-// With --stats/-s (or --json / --markdown) the streamed log is suppressed and
-// only a summary report is printed at the end.
+// With --stats/-s the streamed log is suppressed and only a summary report is
+// printed at the end. --format/-f selects the summary format (tty, json, or
+// markdown; default tty).
 //
 // Usage:
 //   claude --output-format stream-json --verbose -p "explain quantum computing" | npx claude_stream_viewer
 //   … | npx claude_stream_viewer --stats
-//   … | npx claude_stream_viewer --json
+//   … | npx claude_stream_viewer --stats --format json
 
 import Readline from 'node:readline';
 import Fs from 'node:fs';
@@ -33,8 +34,7 @@ const __dirname = new URL('.', import.meta.url).pathname;
 type CliOptions = {
 	color: boolean;
 	stats: boolean;
-	json: boolean;
-	markdown: boolean;
+	format: StatsFormat;
 };
 
 /**
@@ -55,8 +55,11 @@ async function main(): Promise<void> {
 		.version(packageVersion)
 		.option('--no-color', 'disable colored output')
 		.option('-s, --stats', 'output only the summary stats (latency, tokens, context, tools); suppresses the streamed log')
-		.option('--json', 'output stats as JSON (implies --stats)')
-		.option('--markdown', 'output stats as Markdown (implies --stats)')
+		.addOption(
+			new Commander.Option('-f, --format <format>', 'stats summary output format')
+				.choices(['tty', 'json', 'markdown'])
+				.default('tty'),
+		)
 		.parse(process.argv);
 
 	const options = program.opts<CliOptions>();
@@ -64,8 +67,8 @@ async function main(): Promise<void> {
 		Chalk.level = 0;
 	}
 
-	const format: StatsFormat = options.json === true ? 'json' : options.markdown === true ? 'markdown' : 'text';
-	const statsMode = options.stats === true || options.json === true || options.markdown === true;
+	const format = options.format;
+	const statsMode = options.stats === true;
 
 	const collector = new StatsCollector();
 	const logRenderer = new LogRenderer();

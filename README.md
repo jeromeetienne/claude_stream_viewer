@@ -69,11 +69,11 @@ It reports:
 - **CONTEXT** — peak prompt size and % of the context window used at peak
 - **TOOLS** — call count per tool and tool-result error rate
 
-Choose the output format with `--json` or `--markdown` (both imply `--stats`):
+Choose the output format with `--format` (`-f`) — `tty` (default), `json`, or `markdown`:
 
 ```bash
-cat session.jsonl | npx -y claude_stream_viewer@latest --json | jq .tokens
-cat session.jsonl | npx -y claude_stream_viewer@latest --markdown
+cat session.jsonl | npx -y claude_stream_viewer@latest --stats --format json | jq .tokens
+cat session.jsonl | npx -y claude_stream_viewer@latest --stats --format markdown
 ```
 
 Truncated streams (no `result` event) still print CONTEXT and TOOLS from what was observed, with a "stream truncated" note.
@@ -82,10 +82,9 @@ Truncated streams (no `result` event) still print CONTEXT and TOOLS from what wa
 
 | Flag          | Description                                              | Default |
 |---------------|---------------------------------------------------------|---------|
-| `-s, --stats` | Print only the summary stats; suppress the streamed log | off     |
-| `--json`      | Output stats as JSON (implies `--stats`)                | —       |
-| `--markdown`  | Output stats as Markdown (implies `--stats`)            | —       |
-| `--no-color`  | Disable colored output                                  | colored |
+| `-s, --stats`   | Print only the summary stats; suppress the streamed log | off     |
+| `-f, --format`  | Stats output format: `tty`, `json`, or `markdown`       | `tty`   |
+| `--no-color`    | Disable colored output                                  | colored |
 | `--version`   | Print the package version                               | —       |
 | `--help`      | Print usage help                                        | —       |
 

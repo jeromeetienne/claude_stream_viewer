@@ -1,5 +1,5 @@
 /** Output format selected on the command line for the stats summary. */
-export type StatsFormat = 'text' | 'json' | 'markdown';
+export type StatsFormat = 'tty' | 'json' | 'markdown';
 
 /** Token counts and cost attributed to a single model within a session. */
 export type ModelTokens = {
