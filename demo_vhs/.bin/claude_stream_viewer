@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Local shim so the VHS demo can invoke `claude_stream_viewer` and run the
+# working-tree build (dist/cli.js) instead of npx-ing the published package.
+# Requires `npm run build` first (wired into the `demo_vhs:gif` npm script).
+exec node "$(dirname "$0")/../../dist/cli.js" "$@"

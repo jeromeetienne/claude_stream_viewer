@@ -16,7 +16,7 @@
         "version:bump": "npm version patch --no-git-tag-version && git commit -a -m \"feat: bump version in claude_stream_viewer package.json\"",
         "publish:all": "npm run version:bump && npm run build && npm publish --access public",
         "typecheck": "tsc --noEmit",
-        "demo_vhs:gif": "cd demo_vhs && vhs demo.tape",
+        "demo_vhs:gif": "npm run build && cd demo_vhs && vhs demo.tape",
         "demo_vhs:gif:compress": "cd demo_vhs && gifsicle --lossy=80 --colors 64  -O3 claude_stream_viewer.gif -o claude_stream_viewer.compressed.gif",
         "test": "node --import tsx --test \"tests/**/*.test.ts\"",
         "test:watch": "node --import tsx --test --watch \"tests/**/*.test.ts\""
